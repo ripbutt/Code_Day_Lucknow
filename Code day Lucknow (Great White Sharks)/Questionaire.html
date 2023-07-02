@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Questionnaire to Decide What to Eat</title>
+    <audio src="./Audio/Voice 2.mp3" loop></audio>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body style="background-image: url('./Images/image1.png'); background-size: contain;">
+    <h1>Questionnaire to Decide What to Eat</h1>
+    <br>
+        <a href="index.html"><button class="buy-btn">Home page</button></a>
+    <br>
+    <section>
+        <form id="mcq-form">
+            <h3>Question 1: Country of origin of the food?</h3>
+            <select name="q1">
+                <option value="North American">North American</option>
+                <option value="Italian">Italian</option>
+                <option value="Asian">Asian</option>
+                <option value="European">European</option>
+            </select>
+
+            <h3>Question 2: Category of the food?</h3>
+            <select name="q2">
+                <option value="Appetizer">Appetizer</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Beverage">Beverage</option>
+            </select>
+
+            <h3>Question 3: Taste of the food?</h3>
+            <select name="q3">
+                <option value="Spicy">Spicy</option>
+                <option value="Sweet">Sweet</option>
+                <option value="Mild">Mild</option>
+                <option value="Intense">Intense</option>
+            </select>
+
+            <h3>Question 4: Texture of the food?</h3>
+            <select name="q4">
+                <option value="Rough">Rough</option>
+                <option value="Smooth">Smooth</option>
+                <option value="Liquid">Liquid</option>
+                <option value="Solid">Solid</option>
+            </select>
+
+            <input type="button" value="Submit" onclick="calculateCombinations()">
+        </form>
+    </section>
+
+    <div id="result">
+        <h2>Combinations:</h2>
+        <p id="combination-text"></p>
+    </div>
+
+    <script>
+        const audio = document.querySelector("audio");
+
+        function calculateCombinations() {
+            var form = document.getElementById("mcq-form");
+            var q1 = form.elements["q1"].value;
+            var q2 = form.elements["q2"].value;
+            var q3 = form.elements["q3"].value;
+            var q4 = form.elements["q4"].value;
+
+            var combinations = [];
+
+            // Generate all possible combinations
+            var optionsQ1 = ["North American", "Italian", "European", "Asian"];
+            var optionsQ2 = ["Appetizer", "Main Course", "Dessert", "Beverage"];
+            var optionsQ3 = ["Spicy", "Sweet", "Mild", "Intense"];
+            var optionsQ4 = ["Rough", "Smooth", "Liquid", "Solid"];
+
+            for (var i = 0; i < optionsQ1.length; i++) {
+                for (var j = 0; j < optionsQ2.length; j++) {
+                    for (var k = 0; k < optionsQ3.length; k++) {
+                        for (var l = 0; l < optionsQ4.length; l++) {
+                            var combination = [optionsQ1[i], optionsQ2[j], optionsQ3[k], optionsQ4[l]];
+                            combinations.push(combination);
+                        }
+                    }
+                }
+            }
+
+            // Map combinations to names
+            var combinationNames = {
+                "Italian,Appetizer,Intense,Smooth": "Carbonara",
+                "North American,Main Course,Spicy,Crispy": "Spicy crispy chicken burger",
+                "Italian,Main Course,Intense,Smooth": "New York Pizza",
+                "Asian,Appetizer,Spicy,Solid": "Spicy Teriyaki Noodles",
+                "Asian,Appetizer,Spicy,Smooth": "Sushi",
+                "North American,Appetizer,Spicy,Crispy": "Tacos",
+                "Asian,Main Course,Spicy,Rough": "Chicken Biryani",
+                "Asian,Appetizer,Spicy,Crispy": "Teriyaki Chicken",
+                "North American,Appetizer,Intense,Smooth": "Loaded Fries",
+                "Asian,Main Course,Spicy,Smooth": "Galawati Kebab",
+                "North American,Dessert,Sweet,Solid": "Brownies",
+                "European,Dessert,Sweet,Smooth": "Blueberry Ice cream",
+                "Asian,Dessert,Sweet,Smooth": "Kulfi",
+                "Asian,Beverage,Sweet,Smooth": "Mango Shake",
+                "European,Dessert,Sweet,Solid": "Tiramisu",
+                "European,Dessert,Sweet,Rough": "Apple Pie",
+                "Asian,Dessert,Sweet,Solid": "Bird's Milk cake",
+                "North American,Beverage,Sweet,Smooth": "Oreo Shake",
+                "European,Beverage,Sweet,Smooth": "Apple Juice",
+                "North American,Beverage,Sweet,Liquid": "Coca Cola",
+                "Asian,Beverage,Sweet,Liquid": "Ice cream cold coffee",
+                "European,Beverage,Mild,Liquid": "Ice Tea",
+                "North American,Beverage,Mild,Liquid": "Virgin Mojito",
+                // Add more combinations and their corresponding names here
+            };
+
+            // Find the selected combination
+            var selectedCombination = combinations.find(function(combination) {
+                return combination[0] === q1 && combination[1] === q2 && combination[2] === q3 && combination[3] === q4;
+            });
+
+            // Get the name for the selected combination
+            var selectedCombinationName = combinationNames[selectedCombination.join(",")];
+
+            // Display the selected combination name
+            var resultText = "Selected Combination: " + selectedCombinationName;
+            if(selectedCombinationName == undefined){
+                document.getElementById("combination-text").textContent = "404 not found, Use Chat GPT or something";
+            } else{
+                document.getElementById("combination-text").textContent = resultText;
+            }
+            
+        }
+
+        audio.loop = true;
+        audio.play();
+    </script>
+</body>
+</html>
+
